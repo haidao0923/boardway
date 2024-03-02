@@ -74,18 +74,13 @@ export default function Home() {
 
   ]
 
-  const currentTile = 0;
+  const [currentTile, setCurrentTile] = useState(0);
+  const [isMoving, setIsMoving] = useState(false);
   const money = 200;
-
-  const [topPosition, setTopPosition] = useState('2vh'); // Initial top position
-  const [leftPosition, setLeftPosition] = useState('2.25vw'); // Initial left position
-
-
-  const [positionIndex, setPositionIndex] = useState(0); // Initial position index
 
   // Function to handle the character movement
   function moveCharacter(increment) {
-    setPositionIndex(prevIndex => (prevIndex + increment) % tilePosition.length);
+    setCurrentTile(prevIndex => (prevIndex + increment) % tilePosition.length);
   };
 
   return (
@@ -112,7 +107,7 @@ export default function Home() {
               </div>
             ))}
         </div>
-        <div className={styles.character} style={tilePosition[positionIndex]}>
+        <div className={styles.character} style={tilePosition[currentTile]}>
           <Image
             src="/images/character.png" // Route of the image file
             fill
@@ -120,7 +115,14 @@ export default function Home() {
             alt="Your Name"
           />
         </div>
-        <button className={styles.roll_button} onClick={() => {moveCharacter(3); setTimeout(() => moveCharacter(1), 1000);}}>Roll</button>
+        <button className={styles.roll_button} disabled={isMoving} onClick={() => {
+          const increment = 3;
+          setIsMoving(true);
+          for (let i = 0; i < increment; i++) {
+            setTimeout(() => moveCharacter(1), i * 1000);
+          };
+          setTimeout(() => setIsMoving(false), 3000);
+          }}>Roll</button>
     </div>
   );
 }
