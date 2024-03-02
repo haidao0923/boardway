@@ -1,132 +1,109 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
+  const tilePosition = [
+    {top: '0', left: '0'},
+    {top: '0', left: '12.5vw'},
+    {top: '0', left: '25vw'},
+    {top: '0', left: '37.5vw'},
+    {top: '0', left: '50vw'},
+    {top: '0', left: '62.5vw'},
+    {top: '0', left: '75vw'},
+    {top: '0', left: '87.5vw'},
+    {top: '20vh', left: '87.5vw'},
+    {top: '40vh', left: '87.5vw'},
+    {top: '60vh', left: '87.5vw'},
+    {top: '80vh', left: '87.5vw'},
+    {top: '80vh', left: '75vw'},
+    {top: '80vh', left: '62.5vw'},
+    {top: '80vh', left: '50vw'},
+    {top: '80vh', left: '37.5vw'},
+    {top: '80vh', left: '25vw'},
+    {top: '80vh', left: '12.5vw'},
+    {top: '80vh', left: '0'},
+    {top: '60vh', left: '0'},
+    {top: '40vh', left: '0'},
+    {top: '20vh', left: '0'}
+  ]
+
+  class Tile {
+    index;
+    name;
+    value;
+
+    constructor(index, name, value=0) {
+      this.index = index;
+      this.name = name;
+      this.value = value;
+    }
+
+    getStyle() {
+      return {top: tilePosition[this.index].top,
+              left: tilePosition[this.index].left}
+    }
+
+  }
+
+  let tiles = [
+    new Tile(0, "A"),
+    new Tile(1, "B"),
+    new Tile(2, "C"),
+    new Tile(3, "D"),
+    new Tile(4, "A"),
+    new Tile(5, "B"),
+    new Tile(6, "C"),
+    new Tile(7, "D"),
+    new Tile(8, "A"),
+    new Tile(9, "B"),
+    new Tile(10, "C"),
+    new Tile(11, "D"),
+    new Tile(12, "D"),
+    new Tile(13, "D"),
+    new Tile(14, "D"),
+    new Tile(15, "D"),
+    new Tile(16, "D"),
+    new Tile(17, "D"),
+    new Tile(18, "D"),
+    new Tile(19, "D"),
+    new Tile(20, "D"),
+    new Tile(21, "D"),
+
+  ]
+
+  const currentTile = 0;
+  const money = 200;
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1 className={styles.title}>
-          Open <a href="/boardway">Boardway</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by <code>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    <div>
+       <Head>
+          <title>Boardway</title>
+          <link rel="icon" href="/images/background.png" />
+        </Head>
+        <Image
+          className={styles.background}
+          src="/images/background.png" // Route of the image file
+          fill
+          alt="Your Name"
+        />
+        <div className={styles.board}>
+          {tiles.map((tile, index) => (
+              <div
+                key={index}
+                className={styles.tile}
+                style={tile.getStyle()}
+              >
+                <p className={styles.tile_text}>Dead of Winter</p>
+                <p className={styles.tile_text}>Value: $200</p>
+              </div>
+            ))}
         </div>
-      </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel" className={styles.logo} />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        footer img {
-          margin-left: 0.5rem;
-        }
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-decoration: none;
-          color: inherit;
-        }
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family:
-            Menlo,
-            Monaco,
-            Lucida Console,
-            Liberation Mono,
-            DejaVu Sans Mono,
-            Bitstream Vera Sans Mono,
-            Courier New,
-            monospace;
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
-        }
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
+        <h1 className={styles.text}>First Post</h1>
+        <h2>
+          <Link className={styles.text} href="/">Back to home</Link>
+        </h2>
     </div>
   );
 }
