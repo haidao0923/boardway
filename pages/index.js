@@ -2,6 +2,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export default function Home() {
   const tilePosition = [
@@ -76,6 +77,17 @@ export default function Home() {
   const currentTile = 0;
   const money = 200;
 
+  const [topPosition, setTopPosition] = useState('2vh'); // Initial top position
+  const [leftPosition, setLeftPosition] = useState('2.25vw'); // Initial left position
+
+
+  const [positionIndex, setPositionIndex] = useState(0); // Initial position index
+
+  // Function to handle the character movement
+  function moveCharacter(increment) {
+    setPositionIndex(prevIndex => (prevIndex + increment) % tilePosition.length);
+  };
+
   return (
     <div>
        <Head>
@@ -100,10 +112,15 @@ export default function Home() {
               </div>
             ))}
         </div>
-        <h1 className={styles.text}>First Post</h1>
-        <h2>
-          <Link className={styles.text} href="/">Back to home</Link>
-        </h2>
+        <div className={styles.character} style={tilePosition[positionIndex]}>
+          <Image
+            src="/images/character.png" // Route of the image file
+            fill
+            sizes="8vw, auto"
+            alt="Your Name"
+          />
+        </div>
+        <button className={styles.roll_button} onClick={() => {moveCharacter(3); setTimeout(() => moveCharacter(1), 1000);}}>Roll</button>
     </div>
   );
 }
