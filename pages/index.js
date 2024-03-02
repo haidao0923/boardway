@@ -109,7 +109,7 @@ export default function Home() {
         </div>
         <div className={styles.character} style={tilePosition[currentTile]}>
           <Image
-            src="/images/character.png" // Route of the image file
+            src={currentTile > 10 ? "/images/character_reversed.png" : "/images/character.png"} // Route of the image file
             fill
             sizes="8vw, auto"
             alt="Your Name"
