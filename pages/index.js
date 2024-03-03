@@ -54,7 +54,7 @@ export default function Home() {
   }
 
   let tiles = [
-    new Tile(0, "A"),
+    new Tile(0, "Go ---->"),
     new Tile(1, "B"),
     new Tile(2, "C"),
     new Tile(3, "D"),
@@ -103,6 +103,9 @@ export default function Home() {
     setTimeout(() => tiles[destinationTile].activateTile(), timeToDestination);
     setTimeout(() => setIsRolling(false), 500);
     setTimeout(() => setIsMoving(false), timeToDestination);
+    if (destinationTile < currentTile) {
+      setTimeout(() => setMoney(money + 200), timeToDestination);
+    }
   }
 
   return (
@@ -124,7 +127,7 @@ export default function Home() {
                 className={styles.tile}
                 style={tile.getStyle()}
               >
-                <p className={styles.tile_text}>Dead of Winter</p>
+                <p className={styles.tile_text}>{tile.name}</p>
                 <p className={styles.tile_text}>Value: $200</p>
               </div>
             ))}
@@ -148,6 +151,15 @@ export default function Home() {
           <button disabled={isMoving} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
         </div>
         <p className={styles.money_text}>{`Money: \$${money}`}</p>
+
+        <div className={styles.alert}>
+            <Image
+              src={`/images/alert.png`} // Route of the image file
+              fill
+              alt="dice"
+            />
+        </div>
+
     </div>
   );
 }

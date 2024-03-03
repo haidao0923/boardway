@@ -80,3 +80,18 @@
   font-size: min(2vw,4vh);
   font-weight: bold;
 }
+
+.alert {
+  position: absolute;
+  top: 50%; /* Place button at vertical center */
+  left: 50%; /* Place button at horizontal center */
+  z-index: 99;
+  width: min(50vw, 70vh);
+  height: min(25vw, 35vh);
+  transform: translate(-50%, -50%); /* Center button precisely */
+  border-left: 12vw solid #2b2b2ba6;
+  border-right: 12vw solid #2b2b2ba6;
+  border-top: 12vh solid #2b2b2ba6;
+  border-bottom: 12vh solid #2b2b2ba6;
+  box-sizing: content-box;
+}
