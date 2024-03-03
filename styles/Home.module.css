@@ -30,16 +30,53 @@
 
 .tile_text {
   color: white;
-  font-size: min(2vw,3vh);
+  font-size: min(1.5vw,3vh);
   width: 80%;
   margin-left: auto;
   margin-right: auto;
 }
 
-.roll_button {
+.dice_image {
+  width: 5vw;
+  height: 6vw;
+  animation: floatUpDown 1s infinite alternate ease-in-out;
+}
+
+@keyframes floatUpDown {
+  0% {
+    transform: translate(0%, 0%)
+  }
+  100% {
+    transform: translate(0%, -10%); /* Adjust the distance the image should move up and down */
+  }
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.rotateAnimation {
+  animation: rotate 200ms linear infinite;
+}
+
+.roll_group {
   position: absolute;
-  top: 50%; /* Place button at vertical center */
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  bottom: 25%; /* Place button at vertical center */
   left: 50%; /* Place button at horizontal center */
-  transform: translate(-50%, -50%); /* Center button precisely */
+  transform: translate(-50%, 0%); /* Center button precisely */
+  z-index: 5;
+}
+
+.money_text {
+  position: absolute;
+  top: 22vh; /* Place button at vertical center */
+  right: 16vw; /* Place button at horizontal center */
   z-index: 1;
+  text-align: right;
+  font-size: min(2vw,4vh);
+  font-weight: bold;
 }

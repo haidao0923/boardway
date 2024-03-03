@@ -6,28 +6,28 @@ import { useState } from 'react';
 
 export default function Home() {
   const tilePosition = [
-    {top: '0', left: '0'},
-    {top: '0', left: '12.5vw'},
-    {top: '0', left: '25vw'},
-    {top: '0', left: '37.5vw'},
-    {top: '0', left: '50vw'},
-    {top: '0', left: '62.5vw'},
-    {top: '0', left: '75vw'},
-    {top: '0', left: '87.5vw'},
-    {top: '20vh', left: '87.5vw'},
-    {top: '40vh', left: '87.5vw'},
-    {top: '60vh', left: '87.5vw'},
-    {top: '80vh', left: '87.5vw'},
-    {top: '80vh', left: '75vw'},
-    {top: '80vh', left: '62.5vw'},
-    {top: '80vh', left: '50vw'},
-    {top: '80vh', left: '37.5vw'},
-    {top: '80vh', left: '25vw'},
-    {top: '80vh', left: '12.5vw'},
-    {top: '80vh', left: '0'},
-    {top: '60vh', left: '0'},
-    {top: '40vh', left: '0'},
-    {top: '20vh', left: '0'}
+    {top: 0, left: 0},
+    {top: 0, left: 12.5},
+    {top: 0, left: 25},
+    {top: 0, left: 37.5},
+    {top: 0, left: 50},
+    {top: 0, left: 62.5},
+    {top: 0, left: 75},
+    {top: 0, left: 87.5},
+    {top: 20, left: 87.5},
+    {top: 40, left: 87.5},
+    {top: 60, left: 87.5},
+    {top: 80, left: 87.5},
+    {top: 80, left: 75},
+    {top: 80, left: 62.5},
+    {top: 80, left: 50},
+    {top: 80, left: 37.5},
+    {top: 80, left: 25},
+    {top: 80, left: 12.5},
+    {top: 80, left: 0},
+    {top: 60, left: 0},
+    {top: 40, left: 0},
+    {top: 20, left: 0}
   ]
 
   class Tile {
@@ -42,8 +42,13 @@ export default function Home() {
     }
 
     getStyle() {
-      return {top: tilePosition[this.index].top,
-              left: tilePosition[this.index].left}
+      return {top: tilePosition[this.index].top + 'vh',
+              left: tilePosition[this.index].left + 'vw'}
+    }
+
+    activateTile() {
+      console.log(`Activated tile ${this.index}`)
+      return 1;
     }
 
   }
@@ -75,13 +80,30 @@ export default function Home() {
   ]
 
   const [currentTile, setCurrentTile] = useState(0);
+  const [isRolling, setIsRolling] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
-  const money = 200;
+  const [rolledNumber, setRolledNumber] = useState(1);
+  const [money, setMoney] = useState(200);
 
   // Function to handle the character movement
-  function moveCharacter(increment) {
+  function moveCharacter(increment=1) {
     setCurrentTile(prevIndex => (prevIndex + increment) % tilePosition.length);
   };
+
+  function roll() {
+    const increment = Math.floor(Math.random() * 6) + 1;
+    setRolledNumber(increment);
+    const destinationTile = (currentTile + increment) % tilePosition.length
+    setIsMoving(true);
+    setIsRolling(true);
+    for (let i = 0; i < increment; i++) {
+      setTimeout(() => moveCharacter(), i * 1000);
+    };
+    const timeToDestination = increment * 1000
+    setTimeout(() => tiles[destinationTile].activateTile(), timeToDestination);
+    setTimeout(() => setIsRolling(false), 500);
+    setTimeout(() => setIsMoving(false), timeToDestination);
+  }
 
   return (
     <div>
@@ -93,7 +115,7 @@ export default function Home() {
           className={styles.background}
           src="/images/background.png" // Route of the image file
           fill
-          alt="Your Name"
+          alt="background"
         />
         <div className={styles.board}>
           {tiles.map((tile, index) => (
@@ -107,22 +129,25 @@ export default function Home() {
               </div>
             ))}
         </div>
-        <div className={styles.character} style={tilePosition[currentTile]}>
+        <div className={styles.character} style={{top: tilePosition[currentTile].top + 2 + 'vh', left: tilePosition[currentTile].left + 2.25 + 'vw'}}>
           <Image
             src={currentTile > 10 ? "/images/character_reversed.png" : "/images/character.png"} // Route of the image file
             fill
-            sizes="8vw, auto"
-            alt="Your Name"
+            alt="character"
           />
         </div>
-        <button className={styles.roll_button} disabled={isMoving} onClick={() => {
-          const increment = 3;
-          setIsMoving(true);
-          for (let i = 0; i < increment; i++) {
-            setTimeout(() => moveCharacter(1), i * 1000);
-          };
-          setTimeout(() => setIsMoving(false), 3000);
-          }}>Roll</button>
+
+        <div className={styles.roll_group}>
+          <div className={`${styles.dice_image} ${isRolling ? styles.rotateAnimation : ''}`}>
+            <Image
+              src={`/images/dice/${rolledNumber}.png`} // Route of the image file
+              fill
+              alt="dice"
+            />
+          </div>
+          <button disabled={isMoving} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
+        </div>
+        <p className={styles.money_text}>{`Money: \$${money}`}</p>
     </div>
   );
 }
