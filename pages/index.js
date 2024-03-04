@@ -4,38 +4,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import tilePosition from '../data/tilePosition';
+
 export default function Home() {
-  const tilePosition = [
-    {top: 0, left: 0},
-    {top: 0, left: 12.5},
-    {top: 0, left: 25},
-    {top: 0, left: 37.5},
-    {top: 0, left: 50},
-    {top: 0, left: 62.5},
-    {top: 0, left: 75},
-    {top: 0, left: 87.5},
-    {top: 20, left: 87.5},
-    {top: 40, left: 87.5},
-    {top: 60, left: 87.5},
-    {top: 80, left: 87.5},
-    {top: 80, left: 75},
-    {top: 80, left: 62.5},
-    {top: 80, left: 50},
-    {top: 80, left: 37.5},
-    {top: 80, left: 25},
-    {top: 80, left: 12.5},
-    {top: 80, left: 0},
-    {top: 60, left: 0},
-    {top: 40, left: 0},
-    {top: 20, left: 0}
-  ]
+
 
   class Tile {
     index;
     name;
     value;
 
-    constructor(index, name, value=0) {
+    constructor(index, name, value=1) {
       this.index = index;
       this.name = name;
       this.value = value;
@@ -49,6 +28,7 @@ export default function Home() {
     activateTile() {
       console.log(`Activated tile ${this.index}`);
       setAlertActive(true);
+      setMoney(money => money += this.value)
       return 1;
     }
 
@@ -77,8 +57,27 @@ export default function Home() {
     new Tile(19, "Empty"),
     new Tile(20, "Empty"),
     new Tile(21, "Empty"),
+  ];
 
-  ]
+  class Game {
+    constructor(name, releaseYear, maxPlayer, gameDuration, complexity, rating, category="", mechanism="") {
+      this.name = name;
+      this.releaseYear = releaseYear;
+      this.maxPlayer = maxPlayer;
+      this.gameDuration = gameDuration;
+      this.complexity = complexity;
+      this.rating = rating;
+      //this.category = category;
+      //this.mechanism = mechanism;
+    }
+  }
+
+  let games = [
+    new Game("7 Wonders", 2010, 7, 30, 2.32, 7.7),
+    new Game("Above and Below", 2015, 4, 90, 2.53, 7.7),
+    new Game("Article 27", 2012, 6, 30, 2.11, 6.4),
+    new Game("Catan", 1995, 4, 90, 2.29, 7.1),
+  ];
 
   const [currentTile, setCurrentTile] = useState(0);
   const [isRolling, setIsRolling] = useState(false);
@@ -87,6 +86,7 @@ export default function Home() {
   const [rolledNumber, setRolledNumber] = useState(1);
   const [rollCount, setRollCount] = useState(0);
   const [money, setMoney] = useState(200);
+  const [alertText, setAlertText] = useState("Pick a new tile");
 
   // Function to handle the character movement
   function moveCharacter(increment=1) {
@@ -97,6 +97,7 @@ export default function Home() {
     const increment = Math.floor(Math.random() * 6) + 1;
     setRolledNumber(increment);
     const destinationTile = (currentTile + increment) % tilePosition.length
+    setRollCount(rollCount => rollCount + 1);
     setIsMoving(true);
     setIsRolling(true);
     setTimeout(() => setIsRolling(false), 500);
@@ -104,10 +105,17 @@ export default function Home() {
       setTimeout(() => moveCharacter(), i * 1000);
     };
     const timeToDestination = increment * 1000
-    setTimeout(() => tiles[destinationTile].activateTile(), timeToDestination);
+    setTimeout(() => {tiles[destinationTile].activateTile(); setIsMoving(false);}, timeToDestination);
     if (destinationTile < currentTile) {
-      setTimeout(() => setMoney(money + 200), timeToDestination);
+      //setAlertActive(true);
+      setTimeout(() => setMoney(money => money + 200), timeToDestination);
     }
+  }
+
+  function pickNewTilePrompt() {
+    return (
+      <p className={styles.pick_new_game_title}>Pick a new tile</p>
+    )
   }
 
   return (
@@ -151,7 +159,7 @@ export default function Home() {
                 alt="dice"
               />
             </div>
-            <button className={styles.roll_button} disabled={isMoving} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
+            <button className={styles.roll_button} disabled={isMoving || alertActive} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
           </div>
           <p className={styles.title_text}>{`BoardWay`}</p>
           <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
@@ -164,8 +172,8 @@ export default function Home() {
                   alt="dice"
                 />
             </div>
-            <p className={styles.alert_text}>You completed a loop and earned $200</p>
-            <button className={styles.alert_close} onClick={() => {setAlertActive(false); setIsMoving(false); setRollCount(rollCount => rollCount + 1);}}>Close</button>
+            {currentTile < 10 ? pickNewTilePrompt() : ""}
+            <button className={styles.alert_close} onClick={() => {setAlertActive(false);}}>Close</button>
           </div>}
         </div>
     </div>

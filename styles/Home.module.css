@@ -32,6 +32,10 @@
   justify-content: center;
 }
 
+.tile:hover {
+  background-color: rgb(240, 229, 129);
+}
+
 .tile_text {
   color: white;
   font-size: min(1.5vw,3vh);
@@ -119,7 +123,7 @@
   transform: translate(-50%, -50%); /* Center button precisely */
   z-index: 99;
   width: min(50vw, 70vh);
-  height: min(25vw, 35vh);
+  height: 35vh;
   border-left: 12vw solid transparent;
   border-right: 12vw solid transparent;
   border-top: 12vh solid transparent;
@@ -130,20 +134,15 @@
   background-color: #2b2b2ba6;
 }
 
-.alert_text {
+.pick_new_game_title {
   position: absolute;
-  top: 50vh; /* Place button at vertical center */
+  top: 35vh; /* Place button at vertical center */
   left: 50vw; /* Place button at horizontal center */
-  transform: translate(-50%, -60%); /* Center button precisely */
+  transform: translate(-50%, 0%); /* Center button precisely */
   z-index: 100;
-  width: min(40vw, 60vh);
-  height: min(15vw, 30vh);
   font-size: min(2vw,3.5vh);
   color: rgb(245, 245, 197);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  border: 1px solid red;
 }
 
 .alert_close {
