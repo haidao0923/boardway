@@ -84,6 +84,38 @@
   font-family: 'Stencil';
 }
 
+.new_tile_group {
+  position: absolute;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  bottom: 25%; /* Place button at vertical center */
+  right: 15%; /* Place button at horizontal center */
+  transform: translate(0%, 0%); /* Center button precisely */
+  width: 20vw;
+  text-align: center;
+  z-index: 2;
+}
+
+.new_tile_text {
+  color: rgba(109, 109, 0, 0.637);
+}
+
+.new_tile_image {
+  width: 5vw;
+  height: 6vw;
+  animation: shakeLeftRight 1s infinite alternate ease-in-out;
+}
+
+@keyframes shakeLeftRight {
+  0% {
+    transform: rotate(-7deg)
+  }
+  100% {
+    transform: rotate(7deg); /* Adjust the distance the image should move up and down */
+  }
+}
+
 .title_text {
   position: absolute;
   top: 23vh; /* Place button at vertical center */

@@ -6,6 +6,11 @@ import { useState } from 'react';
 
 import tilePosition from '../data/tilePosition';
 
+import image_7_wonders from '../public/images/games/7_wonders.png'
+import image_above_and_below from '../public/images/games/above_and_below.png';
+import image_article_27 from '../public/images/games/article_27.png';
+import image_catan from '../public/images/games/catan.png';
+
 export default function Home() {
 
 
@@ -14,7 +19,7 @@ export default function Home() {
     name;
     value;
 
-    constructor(index, name, value=1) {
+    constructor(index, name, value=0) {
       this.index = index;
       this.name = name;
       this.value = value;
@@ -60,23 +65,24 @@ export default function Home() {
   ];
 
   class Game {
-    constructor(name, releaseYear, maxPlayer, gameDuration, complexity, rating, category="", mechanism="") {
+    constructor(name, releaseYear, maxPlayer, gameDuration, complexity, rating, image, category="", mechanism="") {
       this.name = name;
       this.releaseYear = releaseYear;
       this.maxPlayer = maxPlayer;
       this.gameDuration = gameDuration;
       this.complexity = complexity;
       this.rating = rating;
+      this.image = image;
       //this.category = category;
       //this.mechanism = mechanism;
     }
   }
 
   let games = [
-    new Game("7 Wonders", 2010, 7, 30, 2.32, 7.7),
-    new Game("Above and Below", 2015, 4, 90, 2.53, 7.7),
-    new Game("Article 27", 2012, 6, 30, 2.11, 6.4),
-    new Game("Catan", 1995, 4, 90, 2.29, 7.1),
+    new Game("7 Wonders", 2010, 7, 30, 2.32, 7.7, image_7_wonders),
+    new Game("Above and Below", 2015, 4, 90, 2.53, 7.7, image_above_and_below),
+    new Game("Article 27", 2012, 6, 30, 2.11, 6.4, image_article_27),
+    new Game("Catan", 1995, 4, 90, 2.29, 7.1, image_catan),
   ];
 
   const [currentTile, setCurrentTile] = useState(0);
@@ -137,6 +143,7 @@ export default function Home() {
                   key={index}
                   className={styles.tile}
                   style={tile.getStyle()}
+                  onClick={() => console.log("Clicked on tile: " + tile.index)}
                 >
                   <p className={styles.tile_text}>{tile.name}</p>
                   {tile.value != 0 ? <p className={styles.tile_text}>{`Value: \$${tile.value}`}</p> : <></>}
@@ -160,6 +167,16 @@ export default function Home() {
               />
             </div>
             <button className={styles.roll_button} disabled={isMoving || alertActive} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
+          </div>
+          <div className={styles.new_tile_group}>
+            <p className={styles.new_tile_text}>Click on a tile to place this game</p>
+            <div className={styles.new_tile_image}>
+              <Image
+                src={`/images/games/7_wonders.png`} // Route of the image file
+                fill
+                alt="game_promo"
+              />
+            </div>
           </div>
           <p className={styles.title_text}>{`BoardWay`}</p>
           <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
