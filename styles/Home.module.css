@@ -83,15 +83,46 @@
 
 .alert {
   position: absolute;
-  top: 50%; /* Place button at vertical center */
-  left: 50%; /* Place button at horizontal center */
+  top: 50vh; /* Place button at vertical center */
+  left: 50vw; /* Place button at horizontal center */
+  transform: translate(-50%, -50%); /* Center button precisely */
   z-index: 99;
   width: min(50vw, 70vh);
   height: min(25vw, 35vh);
-  transform: translate(-50%, -50%); /* Center button precisely */
-  border-left: 12vw solid #2b2b2ba6;
-  border-right: 12vw solid #2b2b2ba6;
-  border-top: 12vh solid #2b2b2ba6;
+  border-left: 12vw solid transparent;
+  border-right: 12vw solid transparent;
+  border-top: 12vh solid transparent;
   border-bottom: 12vh solid #2b2b2ba6;
   box-sizing: content-box;
+  border-radius: 20%;
+  overflow: hidden;
+  background-color: #2b2b2ba6;
+}
+
+.alert_text {
+  position: absolute;
+  top: 50vh; /* Place button at vertical center */
+  left: 50vw; /* Place button at horizontal center */
+  transform: translate(-50%, -60%); /* Center button precisely */
+  z-index: 100;
+  width: min(40vw, 60vh);
+  height: min(15vw, 30vh);
+  font-size: min(2vw,3.5vh);
+  color: rgb(245, 245, 197);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.alert_close {
+  position: absolute;
+  top: 60vh; /* Place button at vertical center */
+  left: 50vw; /* Place button at horizontal center */
+  transform: translate(-50%, 0%); /* Center button precisely */
+  z-index: 100;
+}
+
+.alert_container {
+
 }

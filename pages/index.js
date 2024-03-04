@@ -47,7 +47,8 @@ export default function Home() {
     }
 
     activateTile() {
-      console.log(`Activated tile ${this.index}`)
+      console.log(`Activated tile ${this.index}`);
+      setAlertActive(true);
       return 1;
     }
 
@@ -82,6 +83,7 @@ export default function Home() {
   const [currentTile, setCurrentTile] = useState(0);
   const [isRolling, setIsRolling] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
+  const [alertActive, setAlertActive] = useState(false);
   const [rolledNumber, setRolledNumber] = useState(1);
   const [money, setMoney] = useState(200);
 
@@ -102,7 +104,6 @@ export default function Home() {
     const timeToDestination = increment * 1000
     setTimeout(() => tiles[destinationTile].activateTile(), timeToDestination);
     setTimeout(() => setIsRolling(false), 500);
-    setTimeout(() => setIsMoving(false), timeToDestination);
     if (destinationTile < currentTile) {
       setTimeout(() => setMoney(money + 200), timeToDestination);
     }
@@ -151,15 +152,17 @@ export default function Home() {
           <button disabled={isMoving} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
         </div>
         <p className={styles.money_text}>{`Money: \$${money}`}</p>
-
-        <div className={styles.alert}>
-            <Image
-              src={`/images/alert.png`} // Route of the image file
-              fill
-              alt="dice"
-            />
-        </div>
-
+        {alertActive && <div className={styles.alert_container}>
+          <div className={styles.alert}>
+              <Image
+                src={`/images/alert.png`} // Route of the image file
+                fill
+                alt="dice"
+              />
+          </div>
+          <p className={styles.alert_text}>You completed a loop and earned $200</p>
+          <button className={styles.alert_close} onClick={() => {setAlertActive(false); setIsMoving(false)}}>Close</button>
+        </div>}
     </div>
   );
 }
