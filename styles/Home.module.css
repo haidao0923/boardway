@@ -98,7 +98,14 @@
 }
 
 .new_tile_text {
-  color: rgba(109, 109, 0, 0.637);
+  color: rgba(83, 83, 0, 0.76);
+  margin: .5vh;
+}
+
+.new_tile_button {
+  margin-top: 0px;
+  font-size: min(1.5vw,3vh);
+  font-family: 'Stencil';
 }
 
 .new_tile_image {

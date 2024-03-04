@@ -93,6 +93,8 @@ export default function Home() {
   const [rollCount, setRollCount] = useState(0);
   const [money, setMoney] = useState(200);
   const [alertText, setAlertText] = useState("Pick a new tile");
+  const [isNewTile, setIsNewTile] = useState(false);
+
 
   // Function to handle the character movement
   function moveCharacter(increment=1) {
@@ -168,6 +170,7 @@ export default function Home() {
             </div>
             <button className={styles.roll_button} disabled={isMoving || alertActive} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
           </div>
+          {isNewTile ?
           <div className={styles.new_tile_group}>
             <p className={styles.new_tile_text}>Click on a tile to place this game</p>
             <div className={styles.new_tile_image}>
@@ -177,7 +180,11 @@ export default function Home() {
                 alt="game_promo"
               />
             </div>
-          </div>
+          </div> :
+          <div className={styles.new_tile_group}>
+            <p className={styles.new_tile_text}>Cost $50</p>
+            <button disabled={money < 50} className={styles.new_tile_button} onClick={() => {setMoney(money => money - 50); setIsNewTile(true);}}>Buy new tile</button>
+          </div>}
           <p className={styles.title_text}>{`BoardWay`}</p>
           <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
           <p className={styles.money_text}>{`Money: \$${money}`}</p>
