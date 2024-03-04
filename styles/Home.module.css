@@ -1,3 +1,7 @@
+.body {
+  font-family: 'Stencil';
+}
+
 .background {
   z-index: -1;
 }
@@ -71,9 +75,36 @@
   z-index: 5;
 }
 
+.roll_button {
+  font-size: min(2vw,4vh);
+  font-family: 'Stencil';
+}
+
+.title_text {
+  position: absolute;
+  top: 23vh; /* Place button at vertical center */
+  left: 50vw; /* Place button at horizontal center */
+  transform: translate(-50%, 0%); /* Center button precisely */
+  z-index: 1;
+  text-align: center;
+  font-size: min(5vw,8vh);
+  font-weight: bold;
+}
+
+.roll_count {
+  position: absolute;
+  top: 23vh; /* Place button at vertical center */
+  left: 16vw; /* Place button at horizontal center */
+  z-index: 1;
+  text-align: left;
+  font-size: min(2vw,4vh);
+  font-weight: bold;
+}
+
+
 .money_text {
   position: absolute;
-  top: 22vh; /* Place button at vertical center */
+  top: 23vh; /* Place button at vertical center */
   right: 16vw; /* Place button at horizontal center */
   z-index: 1;
   text-align: right;
@@ -121,6 +152,8 @@
   left: 50vw; /* Place button at horizontal center */
   transform: translate(-50%, 0%); /* Center button precisely */
   z-index: 100;
+  font-size: min(2vw,4vh);
+  font-family: 'Stencil';
 }
 
 .alert_container {

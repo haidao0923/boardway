@@ -56,27 +56,27 @@ export default function Home() {
 
   let tiles = [
     new Tile(0, "Go ---->"),
-    new Tile(1, "B"),
-    new Tile(2, "C"),
-    new Tile(3, "D"),
-    new Tile(4, "A"),
-    new Tile(5, "B"),
-    new Tile(6, "C"),
-    new Tile(7, "D"),
-    new Tile(8, "A"),
-    new Tile(9, "B"),
-    new Tile(10, "C"),
-    new Tile(11, "D"),
-    new Tile(12, "D"),
-    new Tile(13, "D"),
-    new Tile(14, "D"),
-    new Tile(15, "D"),
-    new Tile(16, "D"),
-    new Tile(17, "D"),
-    new Tile(18, "D"),
-    new Tile(19, "D"),
-    new Tile(20, "D"),
-    new Tile(21, "D"),
+    new Tile(1, "Empty"),
+    new Tile(2, "C", 3),
+    new Tile(3, "Empty"),
+    new Tile(4, "Empty"),
+    new Tile(5, "Empty"),
+    new Tile(6, "Empty"),
+    new Tile(7, "Empty"),
+    new Tile(8, "Empty"),
+    new Tile(9, "Empty"),
+    new Tile(10, "Empty"),
+    new Tile(11, "Empty"),
+    new Tile(12, "Empty"),
+    new Tile(13, "Empty"),
+    new Tile(14, "Empty"),
+    new Tile(15, "Empty"),
+    new Tile(16, "Empty"),
+    new Tile(17, "Empty"),
+    new Tile(18, "Empty"),
+    new Tile(19, "Empty"),
+    new Tile(20, "Empty"),
+    new Tile(21, "Empty"),
 
   ]
 
@@ -85,6 +85,7 @@ export default function Home() {
   const [isMoving, setIsMoving] = useState(false);
   const [alertActive, setAlertActive] = useState(false);
   const [rolledNumber, setRolledNumber] = useState(1);
+  const [rollCount, setRollCount] = useState(0);
   const [money, setMoney] = useState(200);
 
   // Function to handle the character movement
@@ -98,12 +99,12 @@ export default function Home() {
     const destinationTile = (currentTile + increment) % tilePosition.length
     setIsMoving(true);
     setIsRolling(true);
+    setTimeout(() => setIsRolling(false), 500);
     for (let i = 0; i < increment; i++) {
       setTimeout(() => moveCharacter(), i * 1000);
     };
     const timeToDestination = increment * 1000
     setTimeout(() => tiles[destinationTile].activateTile(), timeToDestination);
-    setTimeout(() => setIsRolling(false), 500);
     if (destinationTile < currentTile) {
       setTimeout(() => setMoney(money + 200), timeToDestination);
     }
@@ -115,54 +116,58 @@ export default function Home() {
           <title>Boardway</title>
           <link rel="icon" href="/images/background.png" />
         </Head>
-        <Image
-          className={styles.background}
-          src="/images/background.png" // Route of the image file
-          fill
-          alt="background"
-        />
-        <div className={styles.board}>
-          {tiles.map((tile, index) => (
-              <div
-                key={index}
-                className={styles.tile}
-                style={tile.getStyle()}
-              >
-                <p className={styles.tile_text}>{tile.name}</p>
-                <p className={styles.tile_text}>Value: $200</p>
-              </div>
-            ))}
-        </div>
-        <div className={styles.character} style={{top: tilePosition[currentTile].top + 2 + 'vh', left: tilePosition[currentTile].left + 2.25 + 'vw'}}>
+        <div className={styles.body}>
           <Image
-            src={currentTile > 10 ? "/images/character_reversed.png" : "/images/character.png"} // Route of the image file
+            className={styles.background}
+            src="/images/background.png" // Route of the image file
             fill
-            alt="character"
+            alt="background"
           />
-        </div>
-
-        <div className={styles.roll_group}>
-          <div className={`${styles.dice_image} ${isRolling ? styles.rotateAnimation : ''}`}>
+          <div className={styles.board}>
+            {tiles.map((tile, index) => (
+                <div
+                  key={index}
+                  className={styles.tile}
+                  style={tile.getStyle()}
+                >
+                  <p className={styles.tile_text}>{tile.name}</p>
+                  {tile.value != 0 ? <p className={styles.tile_text}>{`Value: \$${tile.value}`}</p> : <></>}
+                </div>
+              ))}
+          </div>
+          <div className={styles.character} style={{top: tilePosition[currentTile].top + 2 + 'vh', left: tilePosition[currentTile].left + 2.25 + 'vw'}}>
             <Image
-              src={`/images/dice/${rolledNumber}.png`} // Route of the image file
+              src={currentTile > 10 ? "/images/character_reversed.png" : "/images/character.png"} // Route of the image file
               fill
-              alt="dice"
+              alt="character"
             />
           </div>
-          <button disabled={isMoving} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
-        </div>
-        <p className={styles.money_text}>{`Money: \$${money}`}</p>
-        {alertActive && <div className={styles.alert_container}>
-          <div className={styles.alert}>
+
+          <div className={styles.roll_group}>
+            <div className={`${styles.dice_image} ${isRolling ? styles.rotateAnimation : ''}`}>
               <Image
-                src={`/images/alert.png`} // Route of the image file
+                src={`/images/dice/${rolledNumber}.png`} // Route of the image file
                 fill
                 alt="dice"
               />
+            </div>
+            <button className={styles.roll_button} disabled={isMoving} onClick={() => {roll(); console.log("Clicked")}}>Roll</button>
           </div>
-          <p className={styles.alert_text}>You completed a loop and earned $200</p>
-          <button className={styles.alert_close} onClick={() => {setAlertActive(false); setIsMoving(false)}}>Close</button>
-        </div>}
+          <p className={styles.title_text}>{`BoardWay`}</p>
+          <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
+          <p className={styles.money_text}>{`Money: \$${money}`}</p>
+          {alertActive && <div className={styles.alert_container}>
+            <div className={styles.alert}>
+                <Image
+                  src={`/images/alert.png`} // Route of the image file
+                  fill
+                  alt="dice"
+                />
+            </div>
+            <p className={styles.alert_text}>You completed a loop and earned $200</p>
+            <button className={styles.alert_close} onClick={() => {setAlertActive(false); setIsMoving(false); setRollCount(rollCount => rollCount + 1);}}>Close</button>
+          </div>}
+        </div>
     </div>
   );
 }
