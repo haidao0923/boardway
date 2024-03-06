@@ -79,7 +79,11 @@ export default function Home() {
       }
 
       this.duration = Math.floor(Math.random() * 5) + 3 // 3 to 7 rolls
+    }
 
+    getText() {
+      const modifier = this.multiplier == 2 ? "doubled" : this.multiplier == 0.5 ? "halved" : this.additive > 0 ? `worth \$${this.additive} more` : this.additive < 0 ? `worth \$${-this.additive} less` : "undefined"
+      return `Tiles with ${this.category["name"]} ${this.category_type} ${this.category_amount} are ${modifier} for ${this.duration} rolls`;
     }
   }
 
@@ -167,6 +171,8 @@ export default function Home() {
   const [passedEvent, setPassedEvent] = useState(false);
   const [currentEvents, setCurrentEvents] = useState([])
   const [event1, setEvent1] = useState(null);
+  const [event2, setEvent2] = useState(null);
+  const [event3, setEvent3] = useState(null);
 
   // Function to handle the character movement
   function moveCharacter(increment=1) {
@@ -192,7 +198,8 @@ export default function Home() {
     if (currentTile < 2 && destinationTile >= 2) {
       const newEvent = new Event();
       setEvent1(newEvent);
-      console.log(newEvent.generateRandomEvent());
+      setEvent2(new Event());
+      setEvent3(new Event());
       console.log(newEvent);
       setTimeout(() => {setPassedEvent(true); setAlertActive(true); setAlertText("Pick an event")}, timeToDestination);
     }
@@ -213,9 +220,9 @@ export default function Home() {
   function passedEventDisplay() {
     return (
       <div>
-        <button className={styles.event_choice_1} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>Close</button>
-        <button className={styles.event_choice_2} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>Close</button>
-        <button className={styles.event_choice_3} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>Close</button>
+        <button className={styles.event_choice_1} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>{event1.getText()}</button>
+        <button className={styles.event_choice_2} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>{event2.getText()}</button>
+        <button className={styles.event_choice_3} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>{event3.getText()}</button>
       </div>
     )
   }

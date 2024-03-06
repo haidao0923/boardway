@@ -176,7 +176,7 @@
   left: 50vw; /* Place button at horizontal center */
   transform: translate(-50%, -50%); /* Center button precisely */
   z-index: 99;
-  width: min(50vw, 70vh);
+  width: min(50vw, 100vh);
   height: 35vh;
   border-left: 12vw solid transparent;
   border-right: 12vw solid transparent;
