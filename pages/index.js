@@ -12,6 +12,21 @@ import image_article_27 from '../public/images/games/article_27.png';
 import image_catan from '../public/images/games/catan.png';
 
 export default function Home() {
+  class Event { // Upon passing the midpoint, user is presented one of three events
+    multiplier; // How much to multiply the value
+    additive; // How much to add to the value
+    category; // Duration, Complexity, Rating, etc...
+    category_amount; // what is the numerical value that is compared
+    category_type; // LESS_THAN, GREATER_THAN, EQUAL
+    duration; // Number of rolls
+
+    generateRandomEvent() {
+      if (Math.floor(Math.random()) * 2 == 0) {
+        this.multiplier = Math.random() / 2
+      }
+    }
+  }
+
   class Game {
     constructor(name, releaseYear, maxPlayer, gameDuration, complexity, rating, image, category="", mechanism="") {
       this.name = name;
@@ -60,7 +75,7 @@ export default function Home() {
   }
   
   const [tiles, setTiles] = useState([
-    new Tile(0, "Go ---->"),
+    new Tile(0, null),
     new Tile(1, null),
     new Tile(2, games[0]),
     new Tile(3, null),
@@ -94,7 +109,8 @@ export default function Home() {
   const [alertText, setAlertText] = useState("Pick a new tile");
   const [isNewTile, setIsNewTile] = useState(false);
   const [newGame, setNewGame] = useState(null);
-
+  const [hoveredTile, setHoveredTile] = useState(-1);
+  
 
   // Function to handle the character movement
   function moveCharacter(increment=1) {
@@ -157,6 +173,7 @@ export default function Home() {
                   key={index}
                   className={styles.tile}
                   style={tile.getStyle()}
+                  // Make tile index 0, 7, 11, 18 not clickable
                   onClick={() => {console.log("Clicked on tile: " + tile.index); placeTile(tile.index); console.log(tiles); console.log(newGame)}}
                 >
                   {index == 0 ? <p className={styles.tile_text}>{"Go --------->"}<br></br><br></br>Pass Go Earn $200</p> : tile.game != null ? <p className={styles.tile_text}>{tile.game.name}</p> : <p className={styles.tile_text}>Empty</p>}
