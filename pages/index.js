@@ -12,6 +12,20 @@ import image_article_27 from '../public/images/games/article_27.png';
 import image_catan from '../public/images/games/catan.png';
 
 export default function Home() {
+  const CATEGORY_TYPE = {
+    LESS_THAN: "<",
+    GREATER_THAN: ">",
+    EQUAL: "="
+  };
+
+  const GAME_CATEGORY = { // TODO: Dynamically render array
+    RELEASE_YEAR: {name: "RELEASE_YEAR", value: [1990, 1995, 2000, 2005, 2010, 2015]},
+    MAX_PLAYER: {name: "MAX_PLAYER", value: [2,3,4,5,6,7,8,9,10]},
+    GAME_DURATION: {name: "GAME_DURATION", value: [30, 45, 60, 90]},
+    COMPLEXITY: {name: "COMPLEXITY", value: [1,1.5,2,2.5,3,3.5,4,4.5]},
+    RATING: {name: "RATING", value: [3,4,5,6,7,8,9]}
+  };
+
   class Event { // Upon passing the midpoint, user is presented one of three events
     multiplier; // How much to multiply the value
     additive; // How much to add to the value
@@ -20,10 +34,52 @@ export default function Home() {
     category_type; // LESS_THAN, GREATER_THAN, EQUAL
     duration; // Number of rolls
 
-    static generateRandomEvent() {
-      if (Math.floor(Math.random()) * 2 == 0) {
-        this.multiplier = Math.random() / 2
+    constructor() {
+      this.generateRandomEvent();
+    }
+
+    generateRandomEvent() {
+      let random_number = Math.floor(Math.random() * 4);
+      switch (random_number) {
+      case 0: // x0.5 (halved)
+        this.multiplier = 0.5;
+        break;
+      case 1: // x2 (doubled)
+        this.multiplier = 2;
+        break;
+      case 2: // Lose $5-$50
+        this.additive = -(Math.floor(Math.random() * 10) + 1 * 5);
+        break;
+      case 3: // Gain $5-$50
+        this.additive = (Math.floor(Math.random() * 10) + 1 * 5);
+        break;
+      default:
+        break;
+      };
+
+      random_number = Math.floor(Math.random() * Object.keys(GAME_CATEGORY).length);
+      const categoryKey = Object.keys(GAME_CATEGORY)[random_number];
+      this.category = GAME_CATEGORY[categoryKey];
+
+      this.category_amount = this.category["value"][Math.floor(Math.random() * this.category["value"].length)];
+
+      random_number = Math.floor(Math.random() * 3);
+      switch (random_number) {
+      case 0:
+        this.category_type = CATEGORY_TYPE.LESS_THAN;
+        break;
+      case 1:
+        this.category_type = CATEGORY_TYPE.GREATER_THAN;
+        break;
+      case 2:
+        this.category_type = CATEGORY_TYPE.EQUAL;
+        break;
+      default:
+        break;
       }
+
+      this.duration = Math.floor(Math.random() * 5) + 3 // 3 to 7 rolls
+
     }
   }
 
@@ -110,6 +166,7 @@ export default function Home() {
   const [newGame, setNewGame] = useState(null);
   const [passedEvent, setPassedEvent] = useState(false);
   const [currentEvents, setCurrentEvents] = useState([])
+  const [event1, setEvent1] = useState(null);
 
   // Function to handle the character movement
   function moveCharacter(increment=1) {
@@ -132,7 +189,11 @@ export default function Home() {
     if (destinationTile < currentTile) {
       setTimeout(() => {setMoney(money => money + 200); setAlertActive(true); setAlertText("You passed GO and earned $200!");}, timeToDestination);
     }
-    if (currentTile < 11 && destinationTile >= 11) {
+    if (currentTile < 2 && destinationTile >= 2) {
+      const newEvent = new Event();
+      setEvent1(newEvent);
+      console.log(newEvent.generateRandomEvent());
+      console.log(newEvent);
       setTimeout(() => {setPassedEvent(true); setAlertActive(true); setAlertText("Pick an event")}, timeToDestination);
     }
   }
