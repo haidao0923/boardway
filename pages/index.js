@@ -20,7 +20,7 @@ export default function Home() {
     category_type; // LESS_THAN, GREATER_THAN, EQUAL
     duration; // Number of rolls
 
-    generateRandomEvent() {
+    static generateRandomEvent() {
       if (Math.floor(Math.random()) * 2 == 0) {
         this.multiplier = Math.random() / 2
       }
@@ -109,6 +109,7 @@ export default function Home() {
   const [isNewTile, setIsNewTile] = useState(false);
   const [newGame, setNewGame] = useState(null);
   const [passedEvent, setPassedEvent] = useState(false);
+  const [currentEvents, setCurrentEvents] = useState([])
 
   // Function to handle the character movement
   function moveCharacter(increment=1) {
@@ -151,9 +152,9 @@ export default function Home() {
   function passedEventDisplay() {
     return (
       <div>
-        <button className={styles.event_choice_1} onClick={() => {setAlertActive(false);}}>Close</button>
-        <button className={styles.event_choice_2} onClick={() => {setAlertActive(false);}}>Close</button>
-        <button className={styles.event_choice_3} onClick={() => {setAlertActive(false);}}>Close</button>
+        <button className={styles.event_choice_1} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>Close</button>
+        <button className={styles.event_choice_2} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>Close</button>
+        <button className={styles.event_choice_3} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>Close</button>
       </div>
     )
   }
