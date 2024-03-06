@@ -38,31 +38,30 @@ export default function Home() {
       this.image = image;
       //this.category = category;
       //this.mechanism = mechanism;
-  
+
       this.value = gameDuration;
     }
   }
-  
+
   let games = [
     new Game("7 Wonders", 2010, 7, 30, 2.32, 7.7, image_7_wonders),
     new Game("Above and Below", 2015, 4, 90, 2.53, 7.7, image_above_and_below),
     new Game("Article 27", 2012, 6, 30, 2.11, 6.4, image_article_27),
     new Game("Catan", 1995, 4, 90, 2.29, 7.1, image_catan),
   ];
-  
+
   class Tile {
-  
+
     constructor(index, game) {
       this.index = index;
       this.game = game;
     }
-  
+
     getStyle() {
       return {top: tilePosition[this.index].top + 'vh',
-              left: tilePosition[this.index].left + 'vw',
-              backgroundColor: this.index == 0 ? "green" : this.game == null ? "black" : "rgb(105, 8, 8)"}
+              left: tilePosition[this.index].left + 'vw'}
     }
-  
+
     activateTile() {
       console.log(`Activated tile ${this.index}`);
       //setAlertActive(true);
@@ -71,9 +70,9 @@ export default function Home() {
       }
       return 1;
     }
-  
+
   }
-  
+
   const [tiles, setTiles] = useState([
     new Tile(0, null),
     new Tile(1, null),
@@ -109,8 +108,7 @@ export default function Home() {
   const [alertText, setAlertText] = useState("Pick a new tile");
   const [isNewTile, setIsNewTile] = useState(false);
   const [newGame, setNewGame] = useState(null);
-  const [hoveredTile, setHoveredTile] = useState(-1);
-  
+  const [passedEvent, setPassedEvent] = useState(false);
 
   // Function to handle the character movement
   function moveCharacter(increment=1) {
@@ -131,27 +129,33 @@ export default function Home() {
     const timeToDestination = increment * 1000
     setTimeout(() => {tiles[destinationTile].activateTile(); setIsMoving(false);}, timeToDestination);
     if (destinationTile < currentTile) {
-      setAlertActive(true);
-      setTimeout(() => setMoney(money => money + 200), timeToDestination);
+      setTimeout(() => {setMoney(money => money + 200); setAlertActive(true); setAlertText("You passed GO and earned $200!");}, timeToDestination);
     }
-  }
-
-  function pickNewTilePrompt() {
-    return (
-      <p className={styles.pick_new_game_title}>Pick a new tile</p>
-    )
+    if (currentTile < 11 && destinationTile >= 11) {
+      setTimeout(() => {setPassedEvent(true); setAlertActive(true); setAlertText("Pick an event")}, timeToDestination);
+    }
   }
 
   function getNewGame() {
     return games[Math.floor(Math.random() * games.length)]
   }
-  
+
   function placeTile(index) {
     setIsNewTile(false);
     let newTiles = [...tiles];
     newTiles[index].game = newGame;
     setTiles(newTiles);
     setNewGame(null);
+  }
+
+  function passedEventDisplay() {
+    return (
+      <div>
+        <button className={styles.event_choice_1} onClick={() => {setAlertActive(false);}}>Close</button>
+        <button className={styles.event_choice_2} onClick={() => {setAlertActive(false);}}>Close</button>
+        <button className={styles.event_choice_3} onClick={() => {setAlertActive(false);}}>Close</button>
+      </div>
+    )
   }
 
   return (
@@ -171,12 +175,14 @@ export default function Home() {
             {tiles.map((tile, index) => (
                 <div
                   key={index}
-                  className={styles.tile}
+                  className={index == 0 ? styles.start_tile : index == 11 ? styles.event_tile : tile.game == null ? styles.empty_tile : styles.tile}
                   style={tile.getStyle()}
                   // Make tile index 0, 7, 11, 18 not clickable
-                  onClick={() => {console.log("Clicked on tile: " + tile.index); placeTile(tile.index); console.log(tiles); console.log(newGame)}}
+                  onClick={index == 0 || index == 11 ? null : () => {console.log("Clicked on tile: " + tile.index); placeTile(tile.index); console.log(tiles); console.log(newGame)}}
                 >
-                  {index == 0 ? <p className={styles.tile_text}>{"Go --------->"}<br></br><br></br>Pass Go Earn $200</p> : tile.game != null ? <p className={styles.tile_text}>{tile.game.name}</p> : <p className={styles.tile_text}>Empty</p>}
+                  {index == 0 && <p className={styles.tile_text}>{"Go --------->"}<br></br><br></br>Pass Go Earn $200</p>}
+                  {index == 11 && <p className={styles.tile_text}>{"<--------- Event"}<br></br><br></br>Pass Event to choose a new event</p>}
+                  {tile.game != null ? <p className={styles.tile_text}>{tile.game.name}</p> : index != 0 && index != 11 ? <p className={styles.tile_text}>Empty</p> : null}
                   {tile.game != null ? <p className={styles.tile_text}>{`Value: \$${tile.game.value}`}</p> : <></>}
                 </div>
               ))}
@@ -212,7 +218,7 @@ export default function Home() {
           </div> :
           <div className={styles.new_tile_group}>
             <p className={styles.new_tile_text}>Cost $50</p>
-            <button disabled={money < 50} className={styles.new_tile_button} onClick={() => {setMoney(money => money - 50); setIsNewTile(true); setNewGame(getNewGame())}}>Buy new tile</button>
+            <button disabled={isMoving || alertActive || isNewTile || money < 50} className={styles.new_tile_button} onClick={() => {setMoney(money => money - 50); setIsNewTile(true); setNewGame(getNewGame())}}>Buy new tile</button>
           </div>}
           <p className={styles.title_text}>{`BoardWay`}</p>
           <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
@@ -222,11 +228,13 @@ export default function Home() {
                 <Image
                   src={`/images/alert.png`} // Route of the image file
                   fill
-                  alt="dice"
+                  alt="alert_box"
                 />
             </div>
-            {currentTile < 10 ? pickNewTilePrompt() : ""}
-            <button className={styles.alert_close} onClick={() => {setAlertActive(false);}}>Close</button>
+            <p className={styles.alert_text}>{alertText}</p>
+            {passedEvent ? passedEventDisplay() :
+            <button className={styles.alert_close} onClick={() => {setAlertActive(false);}}>Close</button>}
+
           </div>}
         </div>
     </div>
