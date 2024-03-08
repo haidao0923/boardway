@@ -85,6 +85,16 @@ export default function Home() {
       const modifier = this.multiplier == 2 ? "doubled" : this.multiplier == 0.5 ? "halved" : this.additive > 0 ? `worth \$${this.additive} more` : this.additive < 0 ? `worth \$${-this.additive} less` : "undefined"
       return `Tiles with ${this.category["name"]} ${this.category_type} ${this.category_amount} are ${modifier} for ${this.duration} rolls`;
     }
+
+    triggerEvent(tile) {
+      this.duration -= 1;
+
+
+      if (this.duration == 0) {
+        const updatedEvents = currentEvents.filter(event => event !== this);
+        setCurrentEvents(updatedEvents);
+      }
+    }
   }
 
   class Game {
@@ -125,8 +135,13 @@ export default function Home() {
     activateTile() {
       console.log(`Activated tile ${this.index}`);
       //setAlertActive(true);
+
       if (this.game != null) {
         setMoney(money => money += this.game.value)
+      }
+      //const moneyToGain = this.game.value;
+      for (let i = 0; i < currentEvents.length; i++) {
+        const moneyToGain = currentEvents[i].triggerEvent(moneyToGain);
       }
       return 1;
     }
