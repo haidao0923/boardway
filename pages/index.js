@@ -387,6 +387,7 @@ export default function Home() {
             <button disabled={isMoving || alertActive || isNewTile || money < 50} className={styles.new_tile_button} onClick={() => {setMoney(money => money - 50); setIsNewTile(true); setNewGame(getNewGame())}}>Buy new tile</button>
           </div>}
           <p className={styles.title_text}>{`BoardWay`}</p>
+          <Link className={styles.about_link} href="/boardway">Learn how this game was made</Link>
           <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
           <p className={styles.money_text}>{`Money: \$${money}`}</p>
           {alertActive && <div className={styles.alert_container}>
