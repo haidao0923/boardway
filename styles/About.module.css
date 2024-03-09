@@ -1,21 +1,12 @@
 .description_group {
     position: absolute;
     top: 50%; /* Place button at vertical center */
-    right: 18%; /* Place button at horizontal center */
+    right: 22%; /* Place button at horizontal center */
     transform: translate(0%, -50%); /* Center button precisely */
     text-align: center;
     width: max(14vw, 30vh);
     height: max(14vw, 30vh);
     z-index: 2;
-    border: 1px solid red;
+    transition: width 1s, height 1s; /* Add transition properties */
   }
 
-.description_text {
-    height: fit-content;
-    color: rgba(83, 83, 0, 0.76);
-    margin: .5vh;
-}
-
-.description_image {
-
-}

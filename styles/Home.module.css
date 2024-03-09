@@ -33,10 +33,14 @@
 }
 
 .tile {
-  background-color: rgb(105, 8, 8);
+  background-image: linear-gradient(to top, rgb(105, 8, 8), rgba(255, 0, 0, 0.5)); /* Gradient from dark red to semi-transparent red */
 }
 
-.start_tile, .event_tile, .empty_tile, .tile {
+.about_tile {
+  background-image: linear-gradient(to bottom, rgb(99, 15, 4), rgba(252, 225, 138, 0.795)); /* Gradient from dark red to semi-transparent red */
+}
+
+.start_tile, .event_tile, .empty_tile, .tile, .about_tile {
   position: absolute;
   height: 20vh;
   width: 12.5vw;
@@ -115,6 +119,7 @@
 .new_tile_text {
   color: rgba(83, 83, 0, 0.76);
   margin: .5vh;
+  font-size: min(1.5vw,3vh);
 }
 
 .new_tile_button {
@@ -138,25 +143,27 @@
   }
 }
 
-.title_text {
+.title_group {
   position: absolute;
-  top: 23vh; /* Place button at vertical center */
+  top: 25vh; /* Place button at vertical center */
   left: 50vw; /* Place button at horizontal center */
   transform: translate(-50%, 0%); /* Center button precisely */
+  display: flex;
+  flex-direction: column;
+}
+
+.title_text {
   z-index: 1;
   text-align: center;
   font-size: min(5vw,8vh);
   font-weight: bold;
+  margin: 0px;
 }
 
 .about_link {
-  position: absolute;
-  top: 40vh; /* Place button at vertical center */
-  left: 50vw; /* Place button at horizontal center */
-  transform: translate(-50%, 0%); /* Center button precisely */
   z-index: 1;
   text-align: center;
-  font-size: min(1vw,2vh);
+  font-size: min(2vw,4vh);
   color: rgb(0, 198, 233);
   font-weight: bold;
   font-family: 'Courier New', Courier, monospace;
