@@ -12,6 +12,23 @@ import image_article_27 from '../public/images/games/article_27.png';
 import image_catan from '../public/images/games/catan.png';
 
 export default function Home() {
+
+  const [currentTile, setCurrentTile] = useState(0);
+  const [isRolling, setIsRolling] = useState(false);
+  const [isMoving, setIsMoving] = useState(false);
+  const [alertActive, setAlertActive] = useState(false);
+  const [rolledNumber, setRolledNumber] = useState(1);
+  const [rollCount, setRollCount] = useState(0);
+  const [money, setMoney] = useState(5000);
+  const [alertText, setAlertText] = useState("Pick a new tile");
+  const [isNewTile, setIsNewTile] = useState(false);
+  const [newGame, setNewGame] = useState(null);
+  const [passedEvent, setPassedEvent] = useState(false);
+  const [currentEvents, setCurrentEvents] = useState([])
+  const [event1, setEvent1] = useState(null);
+  const [event2, setEvent2] = useState(null);
+  const [event3, setEvent3] = useState(null);
+
   const CATEGORY_TYPE = {
     LESS_THAN: "<",
     GREATER_THAN: ">",
@@ -43,15 +60,19 @@ export default function Home() {
       switch (random_number) {
       case 0: // x0.5 (halved)
         this.multiplier = 0.5;
+        this.additive = 0;
         break;
       case 1: // x2 (doubled)
         this.multiplier = 2;
+        this.additive = 0;
         break;
       case 2: // Lose $5-$50
         this.additive = -(Math.floor(Math.random() * 10) + 1 * 5);
+        this.multiplier = 1;
         break;
       case 3: // Gain $5-$50
         this.additive = (Math.floor(Math.random() * 10) + 1 * 5);
+        this.multiplier = 1;
         break;
       default:
         break;
@@ -86,13 +107,81 @@ export default function Home() {
       return `Tiles with ${this.category["name"]} ${this.category_type} ${this.category_amount} are ${modifier} for ${this.duration} rolls`;
     }
 
-    triggerEvent(tile) {
+    triggerEvent(tile, moneyToGain) {
       this.duration -= 1;
-
-
       if (this.duration == 0) {
-        const updatedEvents = currentEvents.filter(event => event !== this);
-        setCurrentEvents(updatedEvents);
+        setCurrentEvents(currentEvents => currentEvents.filter(event => event !== this));
+      }
+      console.log("Triggered Event " + this.getText());
+      console.log(tile);
+      if (tile.game == null) {
+        return 0;
+      }
+
+      switch (this.category) {
+      case GAME_CATEGORY.RELEASE_YEAR:
+        console.log("Trigger 1");
+        if (this.triggerEventHelper(tile.game.releaseYear, this.category_type, this.category_amount)) {
+          moneyToGain *= this.multiplier;
+          moneyToGain += this.additive;
+        }
+        break;
+      case GAME_CATEGORY.MAX_PLAYER:
+        console.log("Trigger 2");
+        if (this.triggerEventHelper(tile.game.maxPlayer, this.category_type, this.category_amount)) {
+          moneyToGain *= this.multiplier;
+          moneyToGain += this.additive;
+        }
+        break;
+      case GAME_CATEGORY.GAME_DURATION:
+        console.log("Trigger 3");
+        if (this.triggerEventHelper(tile.game.gameDuration, this.category_type, this.category_amount)) {
+          moneyToGain *= this.multiplier;
+          moneyToGain += this.additive;
+        }
+        break;
+      case GAME_CATEGORY.COMPLEXITY:
+        console.log("Trigger 4");
+        if (this.triggerEventHelper(tile.game.complexity, this.category_type, this.category_amount)) {
+          moneyToGain *= this.multiplier;
+          moneyToGain += this.additive;
+        }
+        break;
+      case GAME_CATEGORY.RATING:
+        console.log("Trigger 5");
+        if (this.triggerEventHelper(tile.game.rating, this.category_type, this.category_amount)) {
+          moneyToGain *= this.multiplier;
+          moneyToGain += this.additive;
+        }
+        break;
+      }
+      console.log("Hi there!");
+      return moneyToGain;
+    }
+
+    triggerEventHelper(tileCategory, eventCategoryType, eventCategoryAmount) {
+      switch (eventCategoryType) {
+      case CATEGORY_TYPE.LESS_THAN:
+        console.log(`Trigger 6 ${tileCategory} : ${eventCategoryAmount}`);
+        if (tileCategory < eventCategoryAmount) {
+          console.log("True");
+          return true;
+        }
+        return false;
+      case CATEGORY_TYPE.GREATER_THAN:
+        console.log(`Trigger 7 ${tileCategory} : ${eventCategoryAmount}`);
+        if (tileCategory > eventCategoryAmount) {
+          console.log("True");
+          return true;
+        }
+        return false;
+      case CATEGORY_TYPE.EQUAL:
+        console.log(`Trigger 8 ${tileCategory} : ${eventCategoryAmount}`);
+        if (tileCategory == eventCategoryAmount) {
+          console.log("True");
+          return true;
+        }
+        return false;
       }
     }
   }
@@ -132,17 +221,20 @@ export default function Home() {
               left: tilePosition[this.index].left + 'vw'}
     }
 
-    activateTile() {
+    activateTile(currentEvents) {
       console.log(`Activated tile ${this.index}`);
+      console.log(`Current Event: ${currentEvents}`);
       //setAlertActive(true);
 
-      if (this.game != null) {
-        setMoney(money => money += this.game.value)
-      }
-      //const moneyToGain = this.game.value;
+      let moneyToGain = this.game != null ? this.game.value : 0;
       for (let i = 0; i < currentEvents.length; i++) {
-        const moneyToGain = currentEvents[i].triggerEvent(moneyToGain);
+        console.log(`Event duration before: ${currentEvents[i].duration}`);
+        console.log(`Old money to gain: ${moneyToGain}`);
+        moneyToGain = currentEvents[i].triggerEvent(this, moneyToGain);
+        console.log(`New money to gain: ${moneyToGain}`);
+        console.log(`Event duration after: ${currentEvents[i].duration}`);
       }
+      setMoney(money => money += moneyToGain)
       return 1;
     }
 
@@ -173,22 +265,6 @@ export default function Home() {
     new Tile(21, null),
   ]);
 
-  const [currentTile, setCurrentTile] = useState(0);
-  const [isRolling, setIsRolling] = useState(false);
-  const [isMoving, setIsMoving] = useState(false);
-  const [alertActive, setAlertActive] = useState(false);
-  const [rolledNumber, setRolledNumber] = useState(1);
-  const [rollCount, setRollCount] = useState(0);
-  const [money, setMoney] = useState(200);
-  const [alertText, setAlertText] = useState("Pick a new tile");
-  const [isNewTile, setIsNewTile] = useState(false);
-  const [newGame, setNewGame] = useState(null);
-  const [passedEvent, setPassedEvent] = useState(false);
-  const [currentEvents, setCurrentEvents] = useState([])
-  const [event1, setEvent1] = useState(null);
-  const [event2, setEvent2] = useState(null);
-  const [event3, setEvent3] = useState(null);
-
   // Function to handle the character movement
   function moveCharacter(increment=1) {
     setCurrentTile(prevIndex => (prevIndex + increment) % tilePosition.length);
@@ -206,16 +282,14 @@ export default function Home() {
       setTimeout(() => moveCharacter(), i * 1000);
     };
     const timeToDestination = increment * 1000
-    setTimeout(() => {tiles[destinationTile].activateTile(); setIsMoving(false);}, timeToDestination);
+    setTimeout(() => {tiles[destinationTile].activateTile(currentEvents); setIsMoving(false);}, timeToDestination);
     if (destinationTile < currentTile) {
       setTimeout(() => {setMoney(money => money + 200); setAlertActive(true); setAlertText("You passed GO and earned $200!");}, timeToDestination);
     }
-    if (currentTile < 2 && destinationTile >= 2) {
-      const newEvent = new Event();
-      setEvent1(newEvent);
+    if (currentTile < 11 && destinationTile >= 11) {
+      setEvent1(new Event());
       setEvent2(new Event());
       setEvent3(new Event());
-      console.log(newEvent);
       setTimeout(() => {setPassedEvent(true); setAlertActive(true); setAlertText("Pick an event")}, timeToDestination);
     }
   }
@@ -232,12 +306,20 @@ export default function Home() {
     setNewGame(null);
   }
 
+  const handleEventClick = (event) => {
+    // Update the currentEvents array with the selected event
+    setCurrentEvents(prevEvents => [...prevEvents, event]);
+    // Reset any other states if needed
+    setPassedEvent(false);
+    setAlertActive(false);
+  };
+
   function passedEventDisplay() {
     return (
       <div>
-        <button className={styles.event_choice_1} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>{event1.getText()}</button>
-        <button className={styles.event_choice_2} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>{event2.getText()}</button>
-        <button className={styles.event_choice_3} onClick={() => {setPassedEvent(false); setAlertActive(false);}}>{event3.getText()}</button>
+        <button className={styles.event_choice_1} onClick={() => {handleEventClick(event1);}}>{event1.getText()}</button>
+        <button className={styles.event_choice_2} onClick={() => {handleEventClick(event2);}}>{event2.getText()}</button>
+        <button className={styles.event_choice_3} onClick={() => {handleEventClick(event3);}}>{event3.getText()}</button>
       </div>
     )
   }
