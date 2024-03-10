@@ -22,6 +22,8 @@ export default function Home() {
   const [money, setMoney] = useState(5000);
   const [moneyModifier, setMoneyModifier] = useState(0);
   const [alertText, setAlertText] = useState("Pick a new tile");
+  const [infoPanelActive, setInfoPanelActive] = useState(false);
+  const [infoPanelText, setInfoPanelText] = useState(<><p>This is a placeholder text</p><p>Test morefdsfsd</p></>);
   const [isNewTile, setIsNewTile] = useState(false);
   const [newGame, setNewGame] = useState(null);
   const [passedEvent, setPassedEvent] = useState(false);
@@ -267,6 +269,22 @@ export default function Home() {
     new Tile(21, null),
   ]);
 
+  function displayCurrentEvents() {
+    setInfoPanelActive(true);
+    console.log(currentEvents.length);
+    let eventJSX = <p>You have no active events</p>;
+    if (currentEvents.length > 0) {
+      eventJSX = currentEvents.map((e, index) => (
+        <p>{e.getText()}</p>
+      ))
+    }
+    setInfoPanelText(
+    <div>
+      {eventJSX}
+    </div>
+    )
+  }
+
   // Function to handle the character movement
   function moveCharacter(increment=1) {
     setCurrentTile(prevIndex => (prevIndex + increment) % tilePosition.length);
@@ -403,6 +421,8 @@ export default function Home() {
           </div>
           <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
           <p className={styles.money_text}>{`Money: \$${money}`}</p>
+          <button className={styles.view_current_event_button} onMouseEnter={() => displayCurrentEvents()} onClick={() => displayCurrentEvents()}>View Active Events</button>
+
           {
             moneyModifier > 0 ? <p className={styles.money_modifier_text}>{`+\$${moneyModifier}`}</p> : null
           }
@@ -418,8 +438,20 @@ export default function Home() {
             <p className={styles.alert_text}>{alertText}</p>
             {passedEvent ? passedEventDisplay() :
             <button className={styles.alert_close} onClick={() => {setAlertActive(false);}}>Close</button>}
-
           </div>}
+
+          {infoPanelActive && <div className={styles.alert_container}>
+            <div className={styles.info_panel}>
+                <Image
+                  src={`/images/info_panel.png`} // Route of the image file
+                  fill
+                  alt="info_panel"
+                />
+            </div>
+            <p className={styles.alert_text}>{infoPanelText}</p>
+            <button className={styles.alert_close} onClick={() => {setInfoPanelActive(false);}}>Close</button>
+          </div>}
+
         </div>
     </div>
   );

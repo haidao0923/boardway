@@ -180,6 +180,17 @@
   font-weight: bold;
 }
 
+.view_current_event_button {
+  position: absolute;
+  top: 31vh; /* Place button at vertical center */
+  left: 16vw; /* Place button at horizontal center */
+  z-index: 1;
+  text-align: left;
+  font-size: min(1.5vw,3vh);
+  font-weight: bold;
+  background-color: rgb(44, 44, 44);
+  color: gold;
+}
 
 .money_text {
   position: absolute;
@@ -214,7 +225,7 @@
   }
 }
 
-.alert {
+.alert, .info_panel {
   position: absolute;
   top: 50vh; /* Place button at vertical center */
   left: 50vw; /* Place button at horizontal center */
@@ -232,6 +243,10 @@
   background-color: #2b2b2ba6;
 }
 
+.alert {
+
+}
+
 .alert_text {
   position: absolute;
   top: 35vh; /* Place button at vertical center */
@@ -240,6 +255,7 @@
   z-index: 100;
   font-size: min(2vw,3.5vh);
   color: rgb(245, 245, 197);
+  text-align: center;
 }
 
 .alert_close {
@@ -250,6 +266,15 @@
   z-index: 100;
   font-size: min(2vw,4vh);
   font-family: 'Stencil';
+}
+
+.info_panel {
+  width: min(60vw, 150vh);
+  height: 40vh;
+  border-left: 6vw solid transparent;
+  border-right: 6vw solid transparent;
+  border-top: 6vh solid transparent;
+  border-bottom: 6vh solid transparent;
 }
 
 .event_choice_1, .event_choice_2, .event_choice_3 {
