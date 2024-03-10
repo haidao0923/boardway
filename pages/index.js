@@ -285,8 +285,13 @@ export default function Home() {
     )
   }
 
-  function displayTileInfo(index) {
-    if (tiles[index].game == null) {
+  function displayTileInfo(game_input) {
+    let game = game_input;
+    if (typeof game == 'number') {
+      game = tiles[game].game;
+    }
+
+    if (game == null) {
       setInfoPanelActive(false);
       return;
     }
@@ -294,17 +299,17 @@ export default function Home() {
     console.log(currentEvents.length);
     let tileJSX = (
     <>
-    <p className={styles.game_name_display}>{tiles[index].game.name}</p>
+    <p className={styles.game_name_display}>{game.name}</p>
     <div className={styles.game_info_display_group}>
       <div className={styles.column}>
-        <p>{`Release Year: ${tiles[index].game.releaseYear}`}</p>
-        <p>{`Max Player: ${tiles[index].game.maxPlayer}`}</p>
-        <p>{`Game Length: ${tiles[index].game.gameDuration}`}</p>
+        <p>{`Release Year: ${game.releaseYear}`}</p>
+        <p>{`Max Player: ${game.maxPlayer}`}</p>
+        <p>{`Game Length: ${game.gameDuration}`}</p>
       </div>
       <div className={styles.column}>
-        <p>{`Complexity: ${tiles[index].game.complexity}`}</p>
-        <p>{`Rating: ${tiles[index].game.rating}`}</p>
-        <p>{`Base Value: ${tiles[index].game.gameDuration}`}</p>
+        <p>{`Complexity: ${game.complexity}`}</p>
+        <p>{`Rating: ${game.rating}`}</p>
+        <p>{`Base Value: ${game.gameDuration}`}</p>
       </div>
     </div>
     </>
@@ -442,6 +447,7 @@ export default function Home() {
                 src={newGame.image} // Route of the image file
                 fill
                 alt="game_promo"
+                onMouseEnter={() => displayTileInfo(newGame)}
               />
             </div>
           </div> :
