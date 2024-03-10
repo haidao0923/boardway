@@ -285,6 +285,34 @@ export default function Home() {
     )
   }
 
+  function displayTileInfo(index) {
+    if (tiles[index].game == null) {
+      setInfoPanelActive(false);
+      return;
+    }
+    setInfoPanelActive(true);
+    console.log(currentEvents.length);
+    let tileJSX = (
+    <>
+    <p className={styles.game_name_display}>{tiles[index].game.name}</p>
+    <div className={styles.game_info_display_group}>
+      <div className={styles.column}>
+        <p>{`Release Year: ${tiles[index].game.releaseYear}`}</p>
+        <p>{`Max Player: ${tiles[index].game.maxPlayer}`}</p>
+        <p>{`Game Length: ${tiles[index].game.gameDuration}`}</p>
+      </div>
+      <div className={styles.column}>
+        <p>{`Complexity: ${tiles[index].game.complexity}`}</p>
+        <p>{`Rating: ${tiles[index].game.rating}`}</p>
+        <p>{`Base Value: ${tiles[index].game.gameDuration}`}</p>
+      </div>
+    </div>
+    </>
+
+    );
+    setInfoPanelText(<>{tileJSX}</>)
+  }
+
   // Function to handle the character movement
   function moveCharacter(increment=1) {
     setCurrentTile(prevIndex => (prevIndex + increment) % tilePosition.length);
@@ -298,6 +326,10 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [moneyModifier]);
+
+  useEffect(() => {
+    setInfoPanelActive(false);
+  }, [alertActive])
 
   function roll() {
     const increment = Math.floor(Math.random() * 6) + 1;
@@ -373,6 +405,8 @@ export default function Home() {
                   className={index == 0 ? styles.start_tile : index == 11 ? styles.event_tile : tile.game == null ? styles.empty_tile : styles.tile}
                   style={tile.getStyle()}
                   // Make tile index 0, 7, 11, 18 not clickable
+                  onMouseEnter={() => displayTileInfo(index)}
+                  onMouseLeave={() => setInfoPanelActive(false)}
                   onClick={index == 0 || index == 11 ? null : () => {console.log("Clicked on tile: " + tile.index); placeTile(tile.index); console.log(tiles); console.log(newGame)}}
                 >
                   {index == 0 && <p className={styles.tile_text}>{"Go --------->"}<br></br><br></br>Pass Go Earn $200</p>}
@@ -421,7 +455,7 @@ export default function Home() {
           </div>
           <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
           <p className={styles.money_text}>{`Money: \$${money}`}</p>
-          <button className={styles.view_current_event_button} onMouseEnter={() => displayCurrentEvents()} onClick={() => displayCurrentEvents()}>View Active Events</button>
+          <button className={styles.view_current_event_button} onMouseOver={() => displayCurrentEvents()} onClick={() => displayCurrentEvents()}>View Active Events</button>
 
           {
             moneyModifier > 0 ? <p className={styles.money_modifier_text}>{`+\$${moneyModifier}`}</p> : null
@@ -449,7 +483,6 @@ export default function Home() {
                 />
             </div>
             <p className={styles.alert_text}>{infoPanelText}</p>
-            <button className={styles.alert_close} onClick={() => {setInfoPanelActive(false);}}>Close</button>
           </div>}
 
         </div>

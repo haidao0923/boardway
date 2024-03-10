@@ -270,11 +270,11 @@
 
 .info_panel {
   width: min(60vw, 150vh);
-  height: 40vh;
+  height: 50vh;
   border-left: 6vw solid transparent;
   border-right: 6vw solid transparent;
-  border-top: 6vh solid transparent;
-  border-bottom: 6vh solid transparent;
+  border-top: 1vh solid transparent;
+  border-bottom: 1vh solid transparent;
 }
 
 .event_choice_1, .event_choice_2, .event_choice_3 {
@@ -296,4 +296,23 @@
 
 .event_choice_3 {
   top: 56vh;
+}
+
+.column {
+  display: inline-block; /* Display columns inline */
+  width: 50%; /* Each column takes up half of the container width */
+  padding: 0 0; /* Add padding to each column */
+  margin: 0px;
+  box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+.game_info_display_group {
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space evenly between columns */
+  width: 100%; /* Ensure full width */
+  margin: 0px;
+}
+
+.game_name_display {
+  margin: -2vh;
 }
