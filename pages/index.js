@@ -2,7 +2,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import tilePosition from '../data/tilePosition';
 
@@ -20,6 +20,7 @@ export default function Home() {
   const [rolledNumber, setRolledNumber] = useState(1);
   const [rollCount, setRollCount] = useState(0);
   const [money, setMoney] = useState(5000);
+  const [moneyModifier, setMoneyModifier] = useState(0);
   const [alertText, setAlertText] = useState("Pick a new tile");
   const [isNewTile, setIsNewTile] = useState(false);
   const [newGame, setNewGame] = useState(null);
@@ -234,6 +235,7 @@ export default function Home() {
         console.log(`New money to gain: ${moneyToGain}`);
         console.log(`Event duration after: ${currentEvents[i].duration}`);
       }
+      setMoneyModifier(moneyModifier => moneyModifier + moneyToGain);
       setMoney(money => money += moneyToGain)
       return 1;
     }
@@ -270,6 +272,15 @@ export default function Home() {
     setCurrentTile(prevIndex => (prevIndex + increment) % tilePosition.length);
   };
 
+  useEffect(() => {
+    if (moneyModifier !== 0) {
+      const timer = setTimeout(() => {
+        setMoneyModifier(0);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [moneyModifier]);
+
   function roll() {
     const increment = Math.floor(Math.random() * 6) + 1;
     setRolledNumber(increment);
@@ -284,7 +295,7 @@ export default function Home() {
     const timeToDestination = increment * 1000
     setTimeout(() => {tiles[destinationTile].activateTile(currentEvents); setIsMoving(false);}, timeToDestination);
     if (destinationTile < currentTile) {
-      setTimeout(() => {setMoney(money => money + 200); setAlertActive(true); setAlertText("You passed GO and earned $200!");}, timeToDestination);
+      setTimeout(() => {setMoneyModifier(moneyModifier => moneyModifier + 200); setMoney(money => money + 200); setAlertActive(true); setAlertText("You passed GO and earned $200!");}, timeToDestination);
     }
     if (currentTile < 11 && destinationTile >= 11) {
       setEvent1(new Event());
@@ -392,6 +403,10 @@ export default function Home() {
           </div>
           <p className={styles.roll_count}>{`Roll #${rollCount + 1}`}</p>
           <p className={styles.money_text}>{`Money: \$${money}`}</p>
+          {
+            moneyModifier > 0 ? <p className={styles.money_modifier_text}>{`+\$${moneyModifier}`}</p> : null
+          }
+
           {alertActive && <div className={styles.alert_container}>
             <div className={styles.alert}>
                 <Image

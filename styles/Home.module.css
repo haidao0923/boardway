@@ -191,6 +191,29 @@
   font-weight: bold;
 }
 
+.money_modifier_text {
+  position: absolute;
+  top: 26vh; /* Place button at vertical center */
+  right: 16vw; /* Place button at horizontal center */
+  z-index: 1;
+  text-align: right;
+  font-size: min(2vw,4vh);
+  font-weight: bold;
+  color: rgb(0, 68, 0);
+  animation: fadeUp 1s linear;
+}
+
+@keyframes fadeUp {
+  0% {
+    transform: translate(0%, 0%);
+    color: rgb(0, 68, 0);
+  }
+  100% {
+    transform: translate(0%, -100%); /* Adjust the distance the image should move up and down */
+    color: rgba(0, 68, 0, 0);
+  }
+}
+
 .alert {
   position: absolute;
   top: 50vh; /* Place button at vertical center */
