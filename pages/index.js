@@ -9,7 +9,40 @@ import tilePosition from '../data/tilePosition';
 import image_7_wonders from '../public/images/games/7_wonders.png'
 import image_above_and_below from '../public/images/games/above_and_below.png';
 import image_article_27 from '../public/images/games/article_27.png';
+import image_avalon from '../public/images/games/avalon.png';
+import image_bears_vs_babies from '../public/images/games/bears_vs_babies.png';
+import image_betrayal from '../public/images/games/betrayal.png';
+import image_blue_moon_city from '../public/images/games/blue_moon_city.png';
+import image_brass_birmingham from '../public/images/games/brass_birmingham.png';
+import image_carcassonne from '../public/images/games/carcassonne.png';
+import image_cashflow from '../public/images/games/cashflow.png';
 import image_catan from '../public/images/games/catan.png';
+import image_clank from '../public/images/games/clank.png';
+import image_codenames from '../public/images/games/codenames.png';
+import image_codenames_pictures from '../public/images/games/codenames_pictures.png';
+import image_concept from '../public/images/games/concept.png';
+import image_cosmic_encounter from '../public/images/games/cosmic_encounter.png';
+import image_coup from '../public/images/games/coup.png';
+import image_dead_of_winter from '../public/images/games/dead_of_winter.png';
+import image_dominion from '../public/images/games/dominion.png';
+import image_fantasy_realms from '../public/images/games/fantasy_realms.png';
+import image_formula_d from '../public/images/games/formula_d.png';
+import image_harry_potter from '../public/images/games/harry_potter.png';
+import image_head_trip from '../public/images/games/head_trip.png';
+import image_jaipur from '../public/images/games/jaipur.png';
+import image_just_one from '../public/images/games/just_one.png';
+import image_kanagawa from '../public/images/games/kanagawa.png';
+import image_kemet from '../public/images/games/kemet.png';
+import image_king_of_tokyo from '../public/images/games/king_of_tokyo.png';
+import image_kumo_hogosha from '../public/images/games/kumo_hogosha.png';
+import image_mascarade from '../public/images/games/mascarade.png';
+import image_modern_art from '../public/images/games/modern_art.png';
+import image_monopoly from '../public/images/games/monopoly.png';
+import image_munchkin from '../public/images/games/munchkin.png';
+import image_pandemic from '../public/images/games/pandemic.png';
+import image_power_grid from '../public/images/games/power_grid.png';
+import image_puerto_rico from '../public/images/games/puerto_rico.png';
+import image_race_for_the_galaxy from '../public/images/games/race_for_the_galaxy.png';
 
 export default function Home() {
 
@@ -209,7 +242,40 @@ export default function Home() {
     new Game("7 Wonders", 2010, 7, 30, 2.32, 7.7, image_7_wonders),
     new Game("Above and Below", 2015, 4, 90, 2.53, 7.7, image_above_and_below),
     new Game("Article 27", 2012, 6, 30, 2.11, 6.4, image_article_27),
+    new Game("Avalon", 2012, 10, 30, 1.74, 7.5, image_avalon),
+    new Game("Bears vs Babies", 2017, 5, 20, 1.24, 5.4, image_bears_vs_babies),
+    new Game("Betrayal", 2022, 6, 60, 2.32, 7.4, image_betrayal),
+    new Game("Blue Moon City", 2006, 4, 40, 2.29, 7.0, image_blue_moon_city),
+    new Game("Brass: Birmingham", 2018, 4, 90, 3.88, 8.6, image_brass_birmingham),
+    new Game("Carcassonne", 2000, 5, 40, 1.89, 7.4, image_carcassonne),
+    new Game("Cashflow", 1996, 6, 180, 2.13, 5.2, image_cashflow),
     new Game("Catan", 1995, 4, 90, 2.29, 7.1, image_catan),
+    new Game("Clank", 2016, 4, 45, 2.23, 7.8, image_clank),
+    new Game("Codenames", 2015, 8, 15, 1.26, 7.5, image_codenames),
+    new Game("Codenames: Pictures", 2016, 8, 15, 1.24, 7.2, image_codenames_pictures),
+    new Game("Concept", 2013, 12, 40, 1.37, 6.8, image_concept),
+    new Game("Cosmic Encounter", 2008, 5, 90, 2.58, 7.5, image_cosmic_encounter),
+    new Game("Coup", 2012, 6, 15, 1.41, 7.0, image_coup),
+    new Game("Dead of Winter", 2014, 5, 90, 3.01, 7.5, image_dead_of_winter),
+    new Game("Dominion", 2008, 4, 30, 2.35, 7.6, image_dominion),
+    new Game("Fantasy Realms", 2017, 6, 20, 1.81, 7.5, image_fantasy_realms),
+    new Game("Formula D", 2008, 10, 60, 1.98, 7.0, image_formula_d),
+    new Game("Harry Potter: Hogwarts Battle", 2016, 4, 45, 2.07, 7.4, image_harry_potter),
+    new Game("Head Trip", 2023, 10, 45, 1.50, 5.7, image_head_trip),
+    new Game("Jaipur", 2009, 2, 30, 1.47, 7.5, image_jaipur),
+    new Game("Just One", 2018, 7, 40, 1.04, 7.6, image_just_one),
+    new Game("Kanagawa", 2016, 4, 45, 2.00, 7.0, image_kanagawa),
+    new Game("Kemet", 2012, 5, 105, 3.00, 7.7, image_kemet),
+    new Game("King of Tokyo", 2011, 6, 30, 1.49, 7.1, image_king_of_tokyo),
+    new Game("KUMO Hogosha", 2015, 4, 30, 2.23, 6.6, image_kumo_hogosha),
+    new Game("Mascarade", 2013, 13, 30, 1.53, 6.6, image_mascarade),
+    new Game("Modern Art", 1992, 5, 45, 2.29, 7.5, image_modern_art),
+    new Game("Monopoly", 1935, 8, 120, 1.62, 4.4, image_monopoly),
+    new Game("Munchkin", 2001, 6, 90, 1.81, 5.9, image_munchkin),
+    new Game("Pandemic", 2008, 4, 45, 2.40, 7.5, image_pandemic),
+    new Game("Power Grid", 2004, 6, 120, 3.25, 7.8, image_power_grid),
+    new Game("Puerto Rico", 2011, 5, 120, 3.26, 8.3, image_puerto_rico),
+    new Game("Race for the Galaxy", 2007, 4, 45, 2.99, 7.7, image_race_for_the_galaxy),
   ];
 
   class Tile {
@@ -227,7 +293,6 @@ export default function Home() {
     activateTile(currentEvents) {
       console.log(`Activated tile ${this.index}`);
       console.log(`Current Event: ${currentEvents}`);
-      //setAlertActive(true);
 
       let moneyToGain = this.game != null ? this.game.value : 0;
       for (let i = 0; i < currentEvents.length; i++) {
