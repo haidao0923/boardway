@@ -252,7 +252,7 @@
   top: 35vh; /* Place button at vertical center */
   left: 50vw; /* Place button at horizontal center */
   transform: translate(-50%, 0%); /* Center button precisely */
-  z-index: 100;
+  z-index: 201;
   font-size: min(2vw,3.5vh);
   color: rgb(245, 245, 197);
   text-align: center;
@@ -275,6 +275,7 @@
   border-right: 6vw solid transparent;
   border-top: 1vh solid transparent;
   border-bottom: 1vh solid transparent;
+  z-index: 200;
 }
 
 .event_choice_1, .event_choice_2, .event_choice_3 {
