@@ -243,19 +243,19 @@
   background-color: #2b2b2ba6;
 }
 
-.alert {
-
-}
-
-.alert_text {
+.alert_text, .info_panel_text {
   position: absolute;
   top: 35vh; /* Place button at vertical center */
   left: 50vw; /* Place button at horizontal center */
   transform: translate(-50%, 0%); /* Center button precisely */
-  z-index: 201;
+  z-index: 100;
   font-size: min(2vw,3.5vh);
   color: rgb(245, 245, 197);
   text-align: center;
+}
+
+.info_panel_text {
+  z-index: 201;
 }
 
 .alert_close {

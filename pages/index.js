@@ -553,7 +553,7 @@ export default function Home() {
                   alt="info_panel"
                 />
             </div>
-            <p className={styles.alert_text}>{infoPanelText}</p>
+            <p className={styles.info_panel_text}>{infoPanelText}</p>
           </div>}
 
         </div>
