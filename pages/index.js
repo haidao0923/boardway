@@ -52,7 +52,7 @@ export default function Home() {
   const [alertActive, setAlertActive] = useState(false);
   const [rolledNumber, setRolledNumber] = useState(1);
   const [rollCount, setRollCount] = useState(0);
-  const [money, setMoney] = useState(5000);
+  const [money, setMoney] = useState(200);
   const [moneyModifier, setMoneyModifier] = useState(0);
   const [alertText, setAlertText] = useState("Pick a new tile");
   const [infoPanelActive, setInfoPanelActive] = useState(false);
@@ -553,7 +553,7 @@ export default function Home() {
                   alt="info_panel"
                 />
             </div>
-            <p className={styles.alert_text}>{infoPanelText}</p>
+            <p className={styles.info_panel_text}>{infoPanelText}</p>
           </div>}
 
         </div>
